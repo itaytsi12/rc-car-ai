@@ -1,30 +1,19 @@
-from Finger import Finger
 class Hand:
     def __init__(self):
-        self.fingers = [
-            Finger("thumb"),
-            Finger("index"),
-            Finger("middle"),
-            Finger("ring"),
-            Finger("pinky")
-        ]
+        self.finger_tips = [8, 12, 16, 20]
+        self.finger_joints = [6, 10, 14, 18]
 
-    def open_hand(self):
-        for finger in self.fingers:
-            finger.open_finger()
-
-    def close_hand(self):
-        for finger in self.fingers:
-            finger.close_finger()
-
-    def count_open_fingers(self):
+    def count_open_fingers(self, hand_landmarks):
         count = 0
 
-        for finger in self.fingers:
-            if finger.is_open():
+        for i in range(len(self.finger_tips)):
+            tip = self.finger_tips[i]
+            joint = self.finger_joints[i]
+
+            if hand_landmarks[tip].y < hand_landmarks[joint].y:
                 count += 1
 
         return count
 
-    def get_finger(self, index):
-        return self.fingers[index]
+    def is_open_hand(self, hand_landmarks):
+        return self.count_open_fingers(hand_landmarks) >= 4
